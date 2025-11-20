@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление удаленной командой</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Панель управления удаленной командой</h1>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active" data-section="dashboard">Дашборд</a></li>
+                    <li><a href="#" data-section="tasks">Задачи</a></li>
+                    <li><a href="#" data-section="mood">Настроение</a></li>
+                </ul>
+            </nav>
+        </header>
+        
+        <main>
+            <!-- Секция дашборда -->
+            <section id="dashboard" class="active-section">
+                <h2>Обзор команды</h2>
+                <div class="dashboard-widgets">
+                    <div class="widget">
+                        <h3>Прогресс задач</h3>
+                        <div class="chart-container">
+                            <canvas id="tasksChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="widget">
+                        <h3>Настроение команды</h3>
+                        <div class="chart-container">
+                            <canvas id="moodChart"></canvas>
+                        </div>
+                    </div>
+                    <div class="widget">
+                        <h3>Активные сотрудники</h3>
+                        <div class="team-members">
+                            <ul id="teamList">
+                                <!-- Список сотрудников будет добавлен через JavaScript -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Секция задач -->
+            <section id="tasks">
+                <h2>Управление задачами</h2>
+                <div class="task-controls">
+                    <button id="addTaskBtn" class="btn primary">Добавить задачу</button>
+                    <select id="taskFilter">
+                        <option value="all">Все задачи</option>
+                        <option value="pending">В ожидании</option>
+                        <option value="in-progress">В работе</option>
+                        <option value="completed">Завершенные</option>
+                    </select>
+                </div>
+                
+                <div class="tasks-container">
+                    <table id="tasksTable">
+                        <thead>
+                            <tr>
+                                <th>Название</th>
+                                <th>Исполнитель</th>
+                                <th>Дедлайн</th>
+                                <th>Статус</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tasksList">
+                            <!-- Задачи будут добавлены через JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Модальное окно для добавления/редактирования задачи -->
+                <div id="taskModal" class="modal">
+                    <div class="modal-content">
+                        <span class="close">&times;</span>
+                        <h3 id="modalTitle">Добавить задачу</h3>
+                        <form id="taskForm">
+                            <div class="form-group">
+                                <label for="taskTitle">Название задачи</label>
+                                <input type="text" id="taskTitle" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskDescription">Описание</label>
+                                <textarea id="taskDescription"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskAssignee">Исполнитель</label>
+                                <select id="taskAssignee" required>
+                                    <!-- Сотрудники будут добавлены через JavaScript -->
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskDeadline">Дедлайн</label>
+                                <input type="date" id="taskDeadline" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="taskStatus">Статус</label>
+                                <select id="taskStatus">
+                                    <option value="pending">В ожидании</option>
+                                    <option value="in-progress">В работе</option>
+                                    <option value="completed">Завершено</option>
+                                </select>
+                            </div>
+                            <input type="hidden" id="taskId">
+                            <button type="submit" class="btn primary">Сохранить</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Секция настроения -->
+            <section id="mood">
+                <h2>Мониторинг настроения</h2>
+                <div class="mood-controls">
+                    <button id="addMoodSurveyBtn" class="btn primary">Создать опрос</button>
+                </div>
+                
+                <div class="mood-survey">
+                    <h3>Текущий опрос</h3>
+                    <form id="moodForm">
+                        <div class="form-group">
+                            <label>Как вы оцениваете свое настроение сегодня?</label>
+                            <div class="mood-rating">
+                                <span data-value="1">😞</span>
+                                <span data-value="2">😕</span>
+                                <span data-value="3">😐</span>
+                                <span data-value="4">🙂</span>
+                                <span data-value="5">😄</span>
+                            </div>
+                            <input type="hidden" id="moodValue" value="3">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>Насколько вы довольны текущими задачами?</label>
+                            <div class="satisfaction-rating">
+                                <span data-value="1">⭐</span>
+                                <span data-value="2">⭐⭐</span>
+                                <span data-value="3">⭐⭐⭐</span>
+                                <span data-value="4">⭐⭐⭐⭐</span>
+                                <span data-value="5">⭐⭐⭐⭐⭐</span>
+                            </div>
+                            <input type="hidden" id="satisfactionValue" value="3">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="stressLevel">Уровень стресса:</label>
+                            <input type="range" id="stressLevel" min="1" max="10" value="5">
+                            <div class="range-labels">
+                                <span>Низкий</span>
+                                <span>Высокий</span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="moodComment">Комментарий (опционально):</label>
+                            <textarea id="moodComment"></textarea>
+                        </div>
+                        
+                        <button type="submit" class="btn primary">Отправить</button>
+                    </form>
+                </div>
+                
+                <div class="mood-history">
+                    <h3>История настроения команды</h3>
+                    <div class="chart-container">
+                        <canvas id="moodHistoryChart"></canvas>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/tasks.js"></script>
+    <script src="js/mood.js"></script>
+</body>
+</html>
